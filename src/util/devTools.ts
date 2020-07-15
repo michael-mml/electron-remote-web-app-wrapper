@@ -1,10 +1,10 @@
 const log = require('electron-log');
-const isDevelopmentMode = require('./isDevelopmentMode');
+const { isDevelopmentMode } = require('./isDevelopmentMode');
 
 const ns = '[devTools]';
 
 // electron-devtools-installer issue: https://github.com/alexdevero/electron-react-webpack-boilerplate/issues/16
-const installDevTools = async (app) => {
+export const installDevTools = async (app: Electron.App) => {
   const fn = '[install]';
   if (isDevelopmentMode(app)) {
     const {
@@ -19,5 +19,3 @@ const installDevTools = async (app) => {
     }
   }
 };
-
-module.exports = installDevTools;

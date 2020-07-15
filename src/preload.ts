@@ -6,7 +6,7 @@ const {
   ipcRenderer
 } = require('electron');
 const log = require('electron-log');
-const webPush = require('./polyfill/webPushPolyfill');
+const { webPush } = require('./polyfill/webPushPolyfill');
 
 const ns = '[preload]';
 
@@ -14,12 +14,12 @@ contextBridge.exposeInMainWorld(
   'electron',
   {
     constants: webPush.constants,
-    desktopCapturer: async (options) => {
+    desktopCapturer: async (options: unknown) => {
       const fn = '[desktopCapturer]';
       try {
         const sources = await desktopCapturer.getSources(options);
 
-        return sources.map(el => ({
+        return sources.map((el: Electron.DesktopCapturerSource) => ({
           ...el,
           thumbnail: el.thumbnail.toDataURL(),
         }));
@@ -29,10 +29,10 @@ contextBridge.exposeInMainWorld(
       }
     },
     gcmFcmMessaging: webPush.gcmFcmMessaging,
-    send: (channel, data) => ipcRenderer.send(channel, data),
-    receive: (channel, callback) => ipcRenderer.on(
+    send: (channel: string, data: any[]) => ipcRenderer.send(channel, data),
+    receive: (channel: string, callback: Function) => ipcRenderer.on(
       channel,
-      (event, ...args) => callback(args)
+      (event: Electron.IpcRendererEvent, ...args: any[]) => callback(args)
     ),
   }
 );

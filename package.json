@@ -5,10 +5,12 @@
   "description": "An Electron wrapper that adds screen sharing and FCM/GCM push notifications to a remote web app.",
   "main": "src/main.js",
   "scripts": {
-    "dist": "electron-builder",
+    "clean:ts": "rm src/**/*.js; rm src/*.js; rm environment/*.js",
+    "compile:ts": "tsc",
+    "dist": "yarn compile:ts && electron-builder",
     "pack": "electron-builder --dir",
     "postinstall": "electron-builder install-app-deps",
-    "start": "electron .",
+    "start": "yarn compile:ts && electron .",
     "start:local": "export BUILD=local && yarn start"
   },
   "repository": "https://github.com/michael-mml/electron-remote-web-app-wrapper",

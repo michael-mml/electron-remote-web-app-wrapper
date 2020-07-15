@@ -12,7 +12,7 @@ const ns = '[screenSharePermissions]';
 // On new installs of the app, the screen share permission remains ticked, but
 // is not granted
 // To resolve this: reset the permission via command line, which unticks the permission
-const resetScreenSharePermissions = () => {
+export const resetScreenSharePermissions = () => {
   const fn = '[resetScreenSharePermissions]';
   switch (systemPreferences.getMediaAccessStatus('screen')) {
     // TODO: send message to remote-web-app that screen sharing screen permissions are missing
@@ -47,5 +47,3 @@ const resetScreenSharePermissions = () => {
     }
   }
 };
-
-module.exports = resetScreenSharePermissions;

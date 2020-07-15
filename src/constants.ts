@@ -1,5 +1,6 @@
 // constants for bridging the Electron API to the web app
-module.exports = {
+// TODO: change this to a default export once main.js is converted to TypeScript
+export = {
   APP_MESSAGE_TYPE: {
     NEW_MESSAGE_ARRIVED: 'new.message',
     NEW_DATA_MESSAGE_ARRIVED: 'new.data.message',

@@ -1,10 +1,9 @@
-const {
+import {
   app,
   BrowserWindow,
   ipcMain,
   screen,
-} = require('electron');
-const log = require('electron-log');
+} from 'electron';
 const {
   setup: setupPushReceiver
 } = require('electron-push-receiver');
@@ -13,18 +12,18 @@ const {
   CustomTray,
   trayFactory
 } = require('./service/tray');
-const installDevTools = require('./util/devTools');
-const isDevelopmentMode = require('./util/isDevelopmentMode');
-const minimizeToBackground = require('./util/minimize');
-const resetScreenSharePermissions = require('./util/screenSharePermissions');
+const { installDevTools } = require('./util/devTools');
+const { isDevelopmentMode } = require('./util/isDevelopmentMode');
+const { minimizeToBackground } = require('./util/minimize');
+const { resetScreenSharePermissions } = require('./util/screenSharePermissions');
 
 const {
-  APP_MESSAGE_TYPE,
-} = require('./types');
+  APP_MESSAGE_TYPE
+} = require('./constants');
 
-let mainWindow;
+let mainWindow: BrowserWindow | null;
 let customTray;
-let isAppQuitting;
+let isAppQuitting = false;
 
 // returns true if first instance
 // returns false if second instance
@@ -32,7 +31,7 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
 } else {
-  const createWindow = (app) => {
+  const createWindow = (app: Electron.App) => {
     const fn = '[createWindow]';
     const { width, height } = screen.getPrimaryDisplay().workAreaSize; // get usable screen size
 
@@ -112,12 +111,14 @@ if (!gotTheLock) {
       // when you should delete the corresponding element.
       mainWindow = null
     );
+
+    return mainWindow;
   };
 
   (async function start(app) {
     await app.whenReady();
     installDevTools(app);
-    createWindow(app);
+    mainWindow = createWindow(app);
     customTray = trayFactory.buildTray(app, mainWindow);
     customTray.createContextMenu(app);
     switch (process.platform) {
