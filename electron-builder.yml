@@ -1,0 +1,30 @@
+---
+appId: com.electron.remote.wrapper
+productName: Electron Remote Web App Wrapper
+directories:
+  buildResources: build
+  output: dist
+# macOS
+mac:
+  files:
+    # match all files
+    - "**/*"
+    # except .ico files
+    - "!build/icons/*.ico"
+    # but include .png files
+    - build/icons/*.png
+dmg:
+  artifactName: "${name}-${os}-setup-${version}.${ext}"
+# Windows
+win:
+  target: nsis
+  files:
+    # match all files
+    - "**/*"
+    # except .png files
+    - "!build/icons/*.png"
+    # but include .ico files
+    - build/icons/*.ico
+nsis:
+  artifactName: "${name}-${os}-setup-${version}.${ext}"
+  deleteAppDataOnUninstall: true
