@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        // Default development environment
+        {
+            "name": "Electron Remote Web App Wrapper",
+            "program": "${workspaceFolder}/src/main.js",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node",
+            // TODO: switch to tsc: watch - tsconfig.json once hot-reload is built
+            // Run the build task defined in tasks.json
+            // Also works as "${defaultBuildTask}"
+            "preLaunchTask": "tsc: build - tsconfig.json",
+        },
+        // Fallback development environment if build tasks don't work
+        {
+            "name": "Launch via NPM",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                // Runs yarn start
+                "start"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+    ]
+}

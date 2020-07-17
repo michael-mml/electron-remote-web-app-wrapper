@@ -6,11 +6,11 @@
   "main": "src/main.js",
   "scripts": {
     "clean:ts": "rm src/**/*.js; rm src/*.js; rm environment/*.js",
-    "compile:ts": "tsc",
-    "dist": "yarn compile:ts && electron-builder",
+    "build": "tsc",
+    "dist": "yarn build && electron-builder",
     "pack": "electron-builder --dir",
     "postinstall": "electron-builder install-app-deps",
-    "start": "yarn compile:ts && electron .",
+    "start": "yarn build && electron .",
     "start:local": "export BUILD=local && yarn start"
   },
   "repository": "https://github.com/michael-mml/electron-remote-web-app-wrapper",
