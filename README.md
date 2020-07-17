@@ -23,6 +23,8 @@ yarn install
 yarn start
 ```
 
+If using VSCode, use the `Electron Remote Web App Wrapper` debug configuration to automatically build and launch the Electron app, while watching for changes in `.ts` files and recompiling.
+
 Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
 ## Known Issues
