@@ -16,7 +16,7 @@
             "type": "pwa-node",
             // TODO: switch to tsc: watch - tsconfig.json once hot-reload is built
             // Run the build task defined in tasks.json
-            // Also works as "${defaultBuildTask}"
+            // Can also configure a default build task in tasks.json and use "${defaultBuildTask}"
             "preLaunchTask": "tsc: build - tsconfig.json",
             "windows": {
                 "program": "${workspaceFolder}\\src\\main.js",
