@@ -18,6 +18,13 @@
             // Run the build task defined in tasks.json
             // Also works as "${defaultBuildTask}"
             "preLaunchTask": "tsc: build - tsconfig.json",
+            "windows": {
+                "program": "${workspaceFolder}\\src\\main.js",
+                // Must append .cmd
+                // https://github.com/microsoft/vscode/issues/102235
+                // https://github.com/Microsoft/vscode/issues/28061
+                "runtimeExecutable": "${workspaceFolder}\\node_modules\\.bin\\electron.cmd",
+            }
         },
         // Fallback development environment if build tasks don't work
         {
