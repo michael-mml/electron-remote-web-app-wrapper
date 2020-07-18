@@ -31,6 +31,10 @@ Note: If you're using Linux Bash for Windows, [see this guide](https://www.howto
 
 Due to Electron's [high resolution image auto scaling](https://www.electronjs.org/docs/api/native-image#high-resolution-image) and `electron-builder`'s minimize image size requirements, `.png` tray icons cannot have `@2x` in the name. 
 
+## Testing
+
+In the Chromium console, run `await window.electron.desktopCapturer({ types: ['window', 'screen']});` to see the list of sources received.
+
 ## License
 
 [GNU GPL 3.0](LICENSE)

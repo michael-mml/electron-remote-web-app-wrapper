@@ -1,11 +1,9 @@
-const { execFile: eF } = require('child_process');
-const {
-  systemPreferences
-} = require('electron');
-const log = require('electron-log');
-const util = require('util');
-const execFile = util.promisify(eF);
+import { execFile as eF } from 'child_process';
+import { systemPreferences } from 'electron';
+import log from 'electron-log';
+import util from 'util';
 
+const execFile = util.promisify(eF);
 const ns = '[screenSharePermissions]';
 
 // macOS only

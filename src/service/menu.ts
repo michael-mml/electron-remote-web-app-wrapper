@@ -1,6 +1,4 @@
-import {
-  Menu,
-} from 'electron';
+import { Menu } from 'electron';
 import log from 'electron-log';
 
 class MenuFactory {
@@ -18,7 +16,7 @@ class MenuFactory {
       }
       default: {
         log.info(`${fn} unknown platform`);
-        break;
+        throw new Error(`${fn} Did not match a platform`);
       }
     }
   };

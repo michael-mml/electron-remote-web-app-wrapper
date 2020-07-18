@@ -1,5 +1,5 @@
-const log = require('electron-log');
-const { isDevelopmentMode } = require('./isDevelopmentMode');
+import log from 'electron-log';
+import { isDevelopmentMode } from './isDevelopmentMode';
 
 const ns = '[devTools]';
 

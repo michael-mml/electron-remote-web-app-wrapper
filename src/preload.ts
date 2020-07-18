@@ -1,12 +1,12 @@
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
-const {
+import {
   contextBridge,
   desktopCapturer,
   ipcRenderer
-} = require('electron');
-const log = require('electron-log');
-const { webPush } = require('./polyfill/webPushPolyfill');
+} from 'electron';
+import log from 'electron-log';
+import { webPush } from './polyfill/webPushPolyfill';
 
 const ns = '[preload]';
 
@@ -14,7 +14,7 @@ contextBridge.exposeInMainWorld(
   'electron',
   {
     constants: webPush.constants,
-    desktopCapturer: async (options: unknown) => {
+    desktopCapturer: async (options: Electron.SourcesOptions) => {
       const fn = '[desktopCapturer]';
       try {
         const sources = await desktopCapturer.getSources(options);

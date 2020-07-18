@@ -1,12 +1,8 @@
-import { CustomContextMenu } from "./menu";
-
-const {
-  Tray
-} = require('electron');
-const log = require('electron-log');
-const path = require('path');
-const { menuFactory } = require('./menu');
-const { isDevelopmentMode } = require('../util/isDevelopmentMode');
+import { Tray } from 'electron';
+import log from 'electron-log';
+import path from 'path';
+import { isDevelopmentMode } from '../util/isDevelopmentMode';
+import { CustomContextMenu, menuFactory } from "./menu";
 
 class TrayFactory {
   buildTray = (app: Electron.App, window: Electron.BrowserWindow) => {
@@ -32,7 +28,7 @@ class TrayFactory {
       }
       default: {
         log.info(`${fn} unknown platform`);
-        break;
+        throw new Error(`${fn} Did not match a platform`);
       }
     }
   };
