@@ -1,19 +1,6 @@
 {
 	"version": "2.0.0",
 	"tasks": [
-        {
-            "type": "typescript",
-			"tsconfig": "tsconfig.json",
-            "problemMatcher": [
-                "$tsc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "label": "tsc: build - tsconfig.json"
-        },
-		// TODO: change the debug launch configuration to this task once we get hot-reload for the Electron process
 		// Watches for changes in .ts files and recompiles the .js
 		{
 			"type": "typescript",
@@ -22,8 +9,20 @@
 			"problemMatcher": [
 				"$tsc-watch"
 			],
-			"group": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
 			"label": "tsc: watch - tsconfig.json"
-		}
+		},
+        {
+            "type": "typescript",
+			"tsconfig": "tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "group": "build",
+            "label": "tsc: build - tsconfig.json"
+        }
 	]
 }
