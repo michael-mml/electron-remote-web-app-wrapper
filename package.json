@@ -6,7 +6,7 @@
   "main": "src/main.js",
   "scripts": {
     "clean:ts": "rm src/**/*.js; rm src/*.js; rm environment/*.js",
-    "build": "tsc",
+    "build": "yarn tsc",
     "dist": "yarn build && electron-builder",
     "pack": "electron-builder --dir",
     "postinstall": "electron-builder install-app-deps",
@@ -23,7 +23,8 @@
     "@types/electron-devtools-installer": "^2.2.0",
     "electron": "^8.2.4",
     "electron-builder": "^22.4.1",
-    "electron-devtools-installer": "^3.1.0"
+    "electron-devtools-installer": "^3.1.0",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "electron-log": "^4.2.2",
