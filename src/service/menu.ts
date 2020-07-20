@@ -1,10 +1,8 @@
-const {
-  Menu,
-} = require('electron');
-const log = require('electron-log');
+import { Menu } from 'electron';
+import log from 'electron-log';
 
 class MenuFactory {
-  buildContextMenu = (app) => {
+  buildContextMenu = (app: Electron.App) => {
     const fn = '[buildContextMenu]';
     switch (process.platform) {
       case 'darwin': {
@@ -18,22 +16,24 @@ class MenuFactory {
       }
       default: {
         log.info(`${fn} unknown platform`);
-        break;
+        throw new Error(`${fn} Did not match a platform`);
       }
     }
   };
 }
 
-class CustomContextMenu {
-  contextMenu;
+export class CustomContextMenu {
+  contextMenu: Menu;
 
-  constructor(menuItems) {
+  constructor(
+    menuItems: (Electron.MenuItemConstructorOptions | Electron.MenuItem)[]
+  ) {
     this.contextMenu = Menu.buildFromTemplate(menuItems);
   }
 }
 
 class MacContextMenu extends CustomContextMenu {
-  constructor(app) {
+  constructor(app: Electron.App) {
     super(
       [
         {
@@ -52,7 +52,7 @@ class MacContextMenu extends CustomContextMenu {
 }
 
 class LinuxContextMenu extends CustomContextMenu {
-  constructor(app) {
+  constructor(app: Electron.App) {
     super(
       [
         {
@@ -71,7 +71,7 @@ class LinuxContextMenu extends CustomContextMenu {
 }
 
 class WindowsContextMenu extends CustomContextMenu {
-  constructor(app) {
+  constructor(app: Electron.App) {
     super(
       [
         {
@@ -98,4 +98,4 @@ class WindowsContextMenu extends CustomContextMenu {
   }
 }
 
-module.exports = new MenuFactory();
+export const menuFactory = new MenuFactory();

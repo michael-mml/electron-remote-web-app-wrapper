@@ -1,30 +1,25 @@
-const {
+import {
   app,
   BrowserWindow,
   ipcMain,
-  screen,
-} = require('electron');
-const log = require('electron-log');
-const {
-  setup: setupPushReceiver
-} = require('electron-push-receiver');
-const path = require('path');
-const {
+  screen
+} from 'electron';
+import log from 'electron-log';
+import { setup as setupPushReceiver } from 'electron-push-receiver';
+import path from 'path';
+import TYPES from './constants';
+import {
   CustomTray,
   trayFactory
-} = require('./service/tray');
-const installDevTools = require('./util/devTools');
-const isDevelopmentMode = require('./util/isDevelopmentMode');
-const minimizeToBackground = require('./util/minimize');
-const resetScreenSharePermissions = require('./util/screenSharePermissions');
+} from './service/tray';
+import { installDevTools } from './util/devTools';
+import { isDevelopmentMode } from './util/isDevelopmentMode';
+import { minimizeToBackground } from './util/minimize';
+import { resetScreenSharePermissions } from './util/screenSharePermissions';
 
-const {
-  APP_MESSAGE_TYPE,
-} = require('./types');
-
-let mainWindow;
-let customTray;
-let isAppQuitting;
+let mainWindow: BrowserWindow | null;
+let customTray: CustomTray;
+let isAppQuitting = false;
 
 // returns true if first instance
 // returns false if second instance
@@ -32,7 +27,7 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
 } else {
-  const createWindow = (app) => {
+  const createWindow = (app: Electron.App) => {
     const fn = '[createWindow]';
     const { width, height } = screen.getPrimaryDisplay().workAreaSize; // get usable screen size
 
@@ -101,7 +96,7 @@ if (!gotTheLock) {
       'close',
       (event) => minimizeToBackground(
         event,
-        mainWindow,
+        <BrowserWindow>mainWindow,
         isAppQuitting,
       )
     );
@@ -112,14 +107,25 @@ if (!gotTheLock) {
       // when you should delete the corresponding element.
       mainWindow = null
     );
+
+    return mainWindow;
   };
 
   (async function start(app) {
+    const fn = '[start]';
     await app.whenReady();
     installDevTools(app);
-    createWindow(app);
-    customTray = trayFactory.buildTray(app, mainWindow);
-    customTray.createContextMenu(app);
+    mainWindow = createWindow(app);
+    try {
+      customTray = trayFactory.buildTray(app, mainWindow);
+      customTray.createContextMenu(app);
+    } catch (err) {
+      // if platform detection finds unsupported OS, exit with error
+      process.exitCode = 1;
+      // TODO: show some sort of error to the user
+      app.quit();
+      return;
+    }
     switch (process.platform) {
       case 'darwin': {
         // only show dock on macOS
@@ -135,8 +141,6 @@ if (!gotTheLock) {
         customTray.tray.setToolTip(`This is a tooltip!`);
         break;
       }
-      default:
-        break;
     }
   })(app);
 
@@ -179,7 +183,7 @@ if (!gotTheLock) {
       createWindow(app);
     }
     // On macOS, clicking the dock icon should restore the window; dock behaves similar to tray
-    CustomTray.restoreWindow(mainWindow);
+    CustomTray.restoreWindow(<BrowserWindow>mainWindow);
   });
 
   // If certificate is not found
@@ -190,7 +194,9 @@ if (!gotTheLock) {
   });
 
   // When we receive an event from ipcRenderer
-  ipcMain.on(APP_MESSAGE_TYPE.RESTORE_APP, () => {
-    CustomTray.restoreWindow(mainWindow);
+  ipcMain.on(TYPES.APP_MESSAGE_TYPE.RESTORE_APP, () => {
+    const fn = `[${TYPES.APP_MESSAGE_TYPE.RESTORE_APP}]`;
+    log.info(fn);
+    CustomTray.restoreWindow(<BrowserWindow>mainWindow);
   });
 }

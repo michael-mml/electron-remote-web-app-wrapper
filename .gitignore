@@ -1,2 +1,6 @@
 dist
 node_modules
+yarn-error.log
+*.tsbuildinfo
+# Ignore compiled JS from tsc
+*.js

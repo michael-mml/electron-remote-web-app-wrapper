@@ -1,5 +1,5 @@
 // constants for bridging the Electron API to the web app
-module.exports = {
+export default {
   APP_MESSAGE_TYPE: {
     NEW_MESSAGE_ARRIVED: 'new.message',
     NEW_DATA_MESSAGE_ARRIVED: 'new.data.message',

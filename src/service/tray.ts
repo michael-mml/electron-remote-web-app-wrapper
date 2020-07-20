@@ -1,13 +1,11 @@
-const {
-  Tray
-} = require('electron');
-const log = require('electron-log');
-const path = require('path');
-const menuFactory = require('./menu');
-const isDevelopmentMode = require('../util/isDevelopmentMode');
+import { Tray } from 'electron';
+import log from 'electron-log';
+import path from 'path';
+import { isDevelopmentMode } from '../util/isDevelopmentMode';
+import { CustomContextMenu, menuFactory } from "./menu";
 
 class TrayFactory {
-  buildTray = (app, window) => {
+  buildTray = (app: Electron.App, window: Electron.BrowserWindow) => {
     const fn = '[buildTray]';
     // .png tray icons cannot use @2x in the name to avoid minimize size error
     const trayIconPath = isDevelopmentMode(app)
@@ -22,34 +20,34 @@ class TrayFactory {
         return new MacTray(trayIconPath);
       }
       case 'linux': {
-        // TODO: create a tray and test on Linux
-        break;
+        // TODO: test on Linux
+        return new LinuxTray(trayIconPath);
       }
       case 'win32': {
         return new WindowsTray(trayIconPath, window);
       }
       default: {
         log.info(`${fn} unknown platform`);
-        break;
+        throw new Error(`${fn} Did not match a platform`);
       }
     }
   };
 }
 
-class CustomTray {
-  contextMenu;
-  tray;
+export class CustomTray {
+  contextMenu!: CustomContextMenu;
+  tray: Electron.Tray;
 
-  constructor(trayIconPath) {
+  constructor(trayIconPath: string) {
     this.tray = new Tray(trayIconPath);
   }
 
-  createContextMenu = (app) => {
+  createContextMenu = (app: Electron.App) => {
     this.contextMenu = menuFactory.buildContextMenu(app);
     this.tray.setContextMenu(this.contextMenu.contextMenu);
   }
 
-  static restoreWindow = (window) => {
+  static restoreWindow = (window: Electron.BrowserWindow) => {
     if (window.isMinimized()) { // window minimized via _
       window.restore();
       window.focus();
@@ -61,20 +59,23 @@ class CustomTray {
   }
 }
 
+class LinuxTray extends CustomTray {
+  constructor(trayIconPath: string) {
+    super(trayIconPath);
+  }
+}
+
 class MacTray extends CustomTray {
-  constructor(trayIconPath) {
+  constructor(trayIconPath: string) {
     super(trayIconPath);
   }
 }
 
 class WindowsTray extends CustomTray {
-  constructor(trayIconPath, window) {
+  constructor(trayIconPath: string, window: Electron.BrowserWindow) {
     super(trayIconPath);
-    this.tray.on('click', (event) => CustomTray.restoreWindow(window));
+    this.tray.on('click', (event: Electron.KeyboardEvent) => CustomTray.restoreWindow(window));
   }
 }
 
-module.exports = {
-  CustomTray: CustomTray,
-  trayFactory: new TrayFactory()
-}
+export const trayFactory = new TrayFactory();
