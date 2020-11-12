@@ -11,7 +11,7 @@
     "pack": "electron-builder --dir",
     "postinstall": "electron-builder install-app-deps",
     "start": "yarn build && electron .",
-    "start:local": "export BUILD=local && yarn start"
+    "start:local": "export NODE_ENV=local && yarn start"
   },
   "repository": "https://github.com/michael-mml/electron-remote-web-app-wrapper",
   "keywords": [
