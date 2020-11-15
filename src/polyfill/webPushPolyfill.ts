@@ -22,7 +22,7 @@ export const webPush = {
       let FCM_SENDER_ID: string;
       (async function setFCMID() {
         try {
-          switch (process.env.BUILD) {
+          switch (process.env.NODE_ENV) {
             case 'local': {
               const module = await import('./../../environment/environment.local');
               FCM_SENDER_ID = module.default.FCM_SENDER_ID;

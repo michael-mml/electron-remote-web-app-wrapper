@@ -6,7 +6,8 @@
   "configurations": [
     // Default development environment
     {
-      "name": "Electron Remote Web App Wrapper",
+      "name": "Compile TS and Hot Reload",
+      // entrypoint
       "program": "${workspaceFolder}/src/main.js",
       "request": "launch",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
@@ -17,6 +18,10 @@
       // Run the build task defined in tasks.json
       // Can also configure a default build task in tasks.json and use "${defaultBuildTask}"
       "preLaunchTask": "${defaultBuildTask}",
+      // environment variables (available in process.env)
+      "env": {
+        "NODE_ENV": "development"
+      },
       "windows": {
         "program": "${workspaceFolder}\\src\\main.js",
         // Must append .cmd
@@ -38,7 +43,10 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "pwa-node"
+      "type": "pwa-node",
+      "env": {
+        "NODE_ENV": "local"
+      },
     },
   ]
 }

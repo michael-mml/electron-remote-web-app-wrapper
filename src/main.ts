@@ -68,7 +68,7 @@ if (!gotTheLock) {
 
     // point to the appropriate environment
     let remoteUrl;
-    switch (process.env.BUILD) {
+    switch (process.env.NODE_ENV) {
       case 'local': {
         remoteUrl = 'https://localhost:8080';
         break;
