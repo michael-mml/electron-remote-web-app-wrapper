@@ -10,6 +10,16 @@ import { webPush } from './polyfill/webPushPolyfill';
 
 const ns = '[preload]';
 
+/**
+ * Usage: (in remote web app)
+ * window.electron.receive(window.electron.constants.NOTIFICATION_RECEIVED, (...args) => {
+ *   ...
+ * });
+ * 
+ * Remote web app has access to all of the below properties via {@link window.electron.}.
+ * 
+ * NOTE: do not override global {@link window} properties
+ */
 contextBridge.exposeInMainWorld(
   'electron',
   {
